@@ -168,3 +168,19 @@ definitions:
         minimum: 1950
         maximum: 2020
         example: 2013
+  ErrorResponse:
+    type: "object"
+    required:
+      - "status"
+      - "timestamp"
+      - "message"
+    properties:
+      status:
+        type: "integer"
+        example: "200"
+      timestamp:
+        type: "string"
+        format: "date-time"
+      message:
+        type: "string"
+        example: "Machine with id [123] does not exist!"
