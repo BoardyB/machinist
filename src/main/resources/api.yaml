@@ -1,0 +1,170 @@
+swagger: "2.0"
+info:
+  description: "This is an API descriptor for an application which manages industrial machines."
+  version: "1.0.0"
+  title: "Machinist"
+basePath: "/api/"
+tags:
+  - name: "machine"
+    description: "Operations to create, modify, delete, and fetch data of machines"
+schemes:
+  - "https"
+  - "http"
+paths:
+  /machine:
+    post:
+      tags:
+        - "machine"
+      summary: "Create a new machine."
+      description: "Creates a machine object with the provided name."
+      operationId: "createMachine"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "A machine object which will be stored in the database."
+          required: true
+          schema:
+            $ref: "#/definitions/CreateMachineRequest"
+      responses:
+        "201":
+          description: "Machine successfully created"
+        "400":
+          description: "Invalid machine creation request."
+    put:
+      tags:
+        - "machine"
+      summary: "Update an existing machine"
+      description: "Updates the machines with the provided parameters."
+      operationId: "updateMachine"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Machine object that will be updated with the provided properties"
+          required: true
+          schema:
+            $ref: "#/definitions/MachineTO"
+      responses:
+        "200":
+          description: "Machine updated successfully."
+        "404":
+          description: "Machine not found"
+        "400":
+          description: "The provided machine was invalid."
+  /machine/{machineId}:
+    get:
+      tags:
+        - "machine"
+      summary: "Fetch a single machine by ID"
+      description: "Returns a single machine."
+      operationId: "getMachineById"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "machineId"
+          in: "path"
+          description: "ID of machine to return"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Machine fetched successfully."
+          schema:
+            $ref: "#/definitions/MachineTO"
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Machine not found"
+    delete:
+      tags:
+        - "machine"
+      summary: "Deletes a stored machine"
+      description: "Deletes a machine stored in the application."
+      operationId: "deleteMachine"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "machineId"
+          in: "path"
+          description: "ID of the machine to delete"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Machine deleted successfully"
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Machine not found"
+  /machine/all:
+    get:
+      tags:
+        - "machine"
+      summary: "Fetch all machines ordered by last updated."
+      description: "Returns all existing machines ordered by which was modified last."
+      operationId: "getAllMachines"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Machines fetched successfully."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/MachineTO"
+definitions:
+  MachineTO:
+    type: "object"
+    required:
+      - "id"
+      - "name"
+    properties:
+      id:
+        type: "string"
+        example: "38d59e95-5eba-4b64-b656-c5a757fcdc61"
+      name:
+        type: "string"
+        minLength: 4
+        maxLength: 100
+        example: "Milling machine"
+      description:
+        type: "string"
+        maxLength: 1000
+        example: "A milling machine is a manufacturing machine which uses rotary cutters to remove material by advancing a cutter into a work piece."
+      yearOfProduction:
+        type: "integer"
+        minimum: 1950
+        maximum: 2020
+        example: 2013
+      createdAt:
+        type: "string"
+        format: "date-time"
+      updatedAt:
+        type: "string"
+        format: "date-time"
+  CreateMachineRequest:
+    type: "object"
+    required:
+      - "name"
+    properties:
+      name:
+        type: "string"
+        minLength: 4
+        maxLength: 100
+        example: "Milling machine"
+      description:
+        type: "string"
+        maxLength: 1000
+        example: "A milling machine is a manufacturing machine which uses rotary cutters to remove material by advancing a cutter into a work piece."
+      yearOfProduction:
+        type: "integer"
+        minimum: 1950
+        maximum: 2020
+        example: 2013

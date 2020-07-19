@@ -21,6 +21,10 @@
         <fasterxml.version>2.11.1</fasterxml.version>
         <guava.version>29.0-jre</guava.version>
         <lombok.version>1.18.12</lombok.version>
+        <javax-validation.version>2.0.1.Final</javax-validation.version>
+        <hibernate-validator.version>6.1.5.Final</hibernate-validator.version>
+        <apache-commons.version>3.11</apache-commons.version>
+        <springfox-swagger.version>3.0.0</springfox-swagger.version>
     </properties>
 
     <dependencies>
@@ -75,6 +79,31 @@
         </dependency>
 
         <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <type>jar</type>
+            <version>${javax-validation.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate-validator.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${springfox-swagger.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${apache-commons.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
@@ -92,6 +121,41 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-codegen-maven-plugin</artifactId>
+                <version>2.4.14</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/resources/api.yaml</inputSpec>
+                            <language>spring</language>
+                            <configOptions>
+                                <dateLibrary>java8</dateLibrary>
+                                <java8>true</java8>
+                                <sourceFolder>src/gen/java/main</sourceFolder>
+                                <interfaceOnly>true</interfaceOnly>
+                                <useBeanValidation>true</useBeanValidation>
+                                <performBeanValidation>true</performBeanValidation>
+                            </configOptions>
+                            <modelPackage>${project.groupId}.restmodel</modelPackage>
+                            <apiPackage>${project.groupId}.restapi</apiPackage>
+                            <output>${project.basedir}/target/generated-sources/java</output>
+                            <addCompileSourceRoot>true</addCompileSourceRoot>
+                            <typeMappings>
+                                <typeMapping>OffsetDateTime=LocalDateTime</typeMapping>
+                            </typeMappings>
+                            <importMappings>
+                                <importMapping>java.time.OffsetDateTime=java.time.LocalDateTime</importMapping>
+                            </importMappings>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
