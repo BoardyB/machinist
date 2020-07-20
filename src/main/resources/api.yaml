@@ -78,8 +78,6 @@ paths:
           description: "Machine fetched successfully."
           schema:
             $ref: "#/definitions/MachineTO"
-        "400":
-          description: "Invalid ID supplied"
         "404":
           description: "Machine not found"
     delete:

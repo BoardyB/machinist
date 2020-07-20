@@ -3,64 +3,55 @@ package com.github.boardyb.machinist.machine;
 import com.github.boardyb.machinist.machine.exception.MachineDoesNotExistException;
 import com.github.boardyb.restmodel.CreateMachineRequest;
 import com.github.boardyb.restmodel.MachineTO;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Slf4j
-@Service
-public class MachineService {
+/**
+ * Defines operations which are intended to manage machines in the application.
+ * These operations consist of: creation, fetch, update, deletion of machines in the database.
+ */
+public interface MachineService {
 
-    private MachineRepository machineRepository;
+    /**
+     * Fetches all machine records from database.
+     *
+     * @return list of DTOs of machines retrieved from the database
+     * or empty list if none was found.
+     */
+    List<MachineTO> getAllMachines();
 
-    @Autowired
-    public MachineService(MachineRepository machineRepository) {
-        this.machineRepository = machineRepository;
-    }
+    /**
+     * Fetches a single machine from the database.
+     *
+     * @param id the id field of the machine which will be fetched.
+     * @return DTO of the machine fetched from the database.
+     * @throws MachineDoesNotExistException if cannot find any machines in the database with the provided id.
+     */
+    MachineTO getMachineById(String id) throws MachineDoesNotExistException;
 
-    public List<MachineTO> getAllMachines() {
-        List<Machine> machines = this.machineRepository.findAllByDeletedFalseOrderByUpdatedAtDesc();
-        log.debug("Fetched machines to return: [{}]", machines);
-        return machines.stream().map((Machine::toDTO)).collect(Collectors.toList());
-    }
+    /**
+     * Deletes a single machine from the database.
+     *
+     * @param id the id field of the machine which will be deleted.
+     * @throws MachineDoesNotExistException if cannot find any machines in the database with the provided id.
+     */
+    void deleteMachineById(String id) throws MachineDoesNotExistException;
 
-    public MachineTO getMachineById(String id) {
-        Machine machine = this.machineRepository
-                .findByIdAndDeletedFalse(id)
-                .orElseThrow(() -> new MachineDoesNotExistException(id));
-        return machine.toDTO();
-    }
+    /**
+     * Creates a new machine with the provided fields.
+     *
+     * @param createMachineRequest provides information about the machine which will be created
+     *                             eg.: name (required), description (optional), yearOfProduction (optional)
+     * @return DTO of the machine which was created.
+     */
+    MachineTO createMachine(CreateMachineRequest createMachineRequest);
 
-    public void deleteMachineById(String id) {
-        Machine machine = this.machineRepository
-                .findByIdAndDeletedFalse(id)
-                .orElseThrow(() -> new MachineDoesNotExistException(id));
-        machine.setDeleted(true);
-        log.debug("Deleting machine with id [{}]", id);
-        this.machineRepository.save(machine);
-    }
-
-    public MachineTO createMachine(CreateMachineRequest createMachineRequest) {
-        Machine machine = new Machine(createMachineRequest.getName(),
-                createMachineRequest.getDescription(),
-                createMachineRequest.getYearOfProduction()
-        );
-        Machine savedMachine = this.machineRepository.save(machine);
-        log.debug("Machine saved with the following fields: [{}]", savedMachine);
-        return savedMachine.toDTO();
-    }
-
-    public void updateMachine(MachineTO machineTO) {
-        Machine machine = this.machineRepository.findByIdAndDeletedFalse(machineTO.getId())
-                .orElseThrow(() -> new MachineDoesNotExistException(machineTO.getId()));
-        machine.setName(machineTO.getName());
-        machine.setDescription(machineTO.getDescription());
-        machine.setYearOfProduction(machineTO.getYearOfProduction());
-        this.machineRepository.save(machine);
-        log.debug("Machine updated with the following fields: [{}]", machine);
-    }
-
+    /**
+     * Updates a machine in the database with the provided fields.
+     *
+     * @param machineTO DTO of the machine which contains the fields
+     *                  which will be updated on the machine in the database.
+     * @throws MachineDoesNotExistException if cannot find any machines in the database with the provided id.
+     */
+    void updateMachine(MachineTO machineTO) throws MachineDoesNotExistException;
 }

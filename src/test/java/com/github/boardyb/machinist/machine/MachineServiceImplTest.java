@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-class MachineServiceTest {
+class MachineServiceImplTest {
 
     private MachineService machineService;
     private MachineRepository machineRepository;
@@ -26,9 +26,15 @@ class MachineServiceTest {
     @BeforeEach
     void setUp() {
         this.machineRepository = Mockito.mock(MachineRepository.class);
-        this.machineService = new MachineService(this.machineRepository);
+        this.machineService = new MachineServiceImpl(this.machineRepository);
     }
 
+    /**
+     * - Given: a CreateMachineRequest with all fields filled correctly is being provided
+     * - When: createMachine is being called with the forementioned object
+     * - Then: a machine with the provided fields should be saved to the database and the method should
+     * return with the DTO generated from the saved object
+     */
     @Test
     void shouldCreateNewMachineIfValidPropertiesWereProvided() {
         CreateMachineRequest createMachineRequest = new CreateMachineRequest();
@@ -51,6 +57,11 @@ class MachineServiceTest {
         assertThat(machine.getYearOfProduction(), equalTo(createMachineRequest.getYearOfProduction()));
     }
 
+    /**
+     * - Given: a valid MachineTO is being provided and there is a machine with the same ID saved in the database.
+     * - When: updateMachine is being called with the DTO.
+     * - Then: the machine should be saved with the new fields.
+     */
     @Test
     void shouldUpdateMachineIfPreviousMachineExistsInStore() {
         ArgumentCaptor<Machine> argumentCaptor = ArgumentCaptor.forClass(Machine.class);
@@ -79,6 +90,11 @@ class MachineServiceTest {
         assertThat(updatedMachine.getYearOfProduction(), equalTo(machineTO.getYearOfProduction()));
     }
 
+    /**
+     * - Given: there is no machine saved with the provided id.
+     * - When: updateMachine is being called with a DTO.
+     * - Then: the machine update should fail and {@link MachineDoesNotExistException} should be thrown
+     */
     @Test
     void shouldFailToUpdateMachineIfThereWasNoMachineStoredWithTheSameId() {
         MachineTO machineTO = new MachineTO();
@@ -89,6 +105,11 @@ class MachineServiceTest {
         assertThrows(MachineDoesNotExistException.class, () -> this.machineService.updateMachine(machineTO));
     }
 
+    /**
+     * - Given: there is a machine stored with an ID which matches the provided one.
+     * - When: getMachineById is being called with a valid machine ID.
+     * - Then: the machine should be fetched from the database and returned as DTO.
+     */
     @Test
     void shouldGetMachineIfThereIsOneStoredWithTheSameId() {
         String testId = "testId";
@@ -107,6 +128,11 @@ class MachineServiceTest {
         assertThat(machine.getYearOfProduction(), equalTo(storedMachine.getYearOfProduction()));
     }
 
+    /**
+     * - Given: there is no machine saved with the provided id.
+     * - When: getMachineById is being called with a valid machine ID.
+     * - Then: the fetch of the machine should fail and {@link MachineDoesNotExistException} should be thrown.
+     */
     @Test
     void shouldFailToGetMachineIfThereWasNoMachineStoredWithTheSameId() {
         String testId = "testId";
@@ -116,6 +142,11 @@ class MachineServiceTest {
         assertThrows(MachineDoesNotExistException.class, () -> this.machineService.getMachineById(testId));
     }
 
+    /**
+     * - Given: there are machines saved in the database
+     * - When: getAllMachines is being called to return all machines in the database
+     * - Then: all stored machines should be fetched and should be returned as DTOs
+     */
     @Test
     void shouldFetchAllStoredMachines() {
         Machine storedMachine = new Machine("test machine",
@@ -147,6 +178,11 @@ class MachineServiceTest {
         assertThat(machineTO1.getYearOfProduction(), equalTo(storedMachine1.getYearOfProduction()));
     }
 
+    /**
+     * - Given: there is a machine saved in the database.
+     * - When: deleteMachineById is being called with a valid id to delete the stored machine.
+     * - Then: the machine's deleted field should be set to true and saved to the database.
+     */
     @Test
     void shouldDeleteStoredMachine() {
         ArgumentCaptor<Machine> argumentCaptor = ArgumentCaptor.forClass(Machine.class);
@@ -167,6 +203,11 @@ class MachineServiceTest {
         assertThat(argumentCaptor.getValue().isDeleted(), equalTo(true));
     }
 
+    /**
+     * - Given: there are no machines saved in the database.
+     * - When: deleteMachineById is being called with a valid id to delete a stored machine.
+     * - Then: the machine deletion should fail and {@link MachineDoesNotExistException} should be thrown.
+     */
     @Test
     void shouldFailToDeleteMachineIfThereWasNoMachineStoredWithTheSameId() {
         String machineId = "testId";
