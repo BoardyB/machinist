@@ -151,6 +151,9 @@ class MachineControllerTest {
         assertThat(machine.getYearOfProduction(), Matchers.equalTo(createMachineRequest.getYearOfProduction()));
         assertThat(machine.getCreatedAt(), Matchers.notNullValue());
         assertThat(machine.getUpdatedAt(), Matchers.notNullValue());
+
+        String location = mvcResult.getResponse().getHeader("Location");
+        assertThat(location, Matchers.equalTo("/api/machine/" + machine.getId()));
     }
 
     /**
@@ -234,6 +237,9 @@ class MachineControllerTest {
         assertThat(updatedMachine.getYearOfProduction(), Matchers.equalTo(machineToUpdate.getYearOfProduction()));
         assertThat(updatedMachine.getCreatedAt(), Matchers.equalTo(savedMachine.getCreatedAt()));
         assertTrue(updatedMachine.getUpdatedAt().isAfter(savedMachine.getUpdatedAt()));
+
+        String location = mvcResult.getResponse().getHeader("Location");
+        assertThat(location, Matchers.equalTo("/api/machine/" + updatedMachine.getId()));
     }
 
     /**

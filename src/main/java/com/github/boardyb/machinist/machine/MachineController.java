@@ -42,6 +42,6 @@ public class MachineController implements MachineApi {
     @Override
     public ResponseEntity<Void> updateMachine(@Valid MachineTO body) {
         this.machineService.updateMachine(body);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().location(URI.create("/api/machine/" + body.getId())).build();
     }
 }
