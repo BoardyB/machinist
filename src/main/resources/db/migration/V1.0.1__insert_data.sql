@@ -1,3 +1,5 @@
+TRUNCATE TABLE machinist.machine;
+
 INSERT INTO machinist.machine (id, created_at, updated_at, name, description, year_of_production, deleted)
 VALUES ('4ac1a5ac-fd94-4605-8175-34cad364816c', '2020-07-20 15:02:00.915', '2020-07-20 15:09:03.711', 'Milling machine',
         'A milling machine is a manufacturing machine which uses rotary cutters to remove material by advancing a cutter into a work piece.',
