@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  db:
+    image: "postgres"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: machinist
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db/machinist
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+    depends_on:
+      - db
