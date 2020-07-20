@@ -1,0 +1,131 @@
+{
+	"info": {
+		"_postman_id": "dfa406b3-c016-4a90-89f6-c7701c0ed6ce",
+		"name": "machinist",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Fetch all machines",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/machine/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"machine",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create new machine",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Milling machine\",\r\n  \"description\": \"A milling machine is a manufacturing machine which uses rotary cutters to remove material by advancing a cutter into a work piece.\",\r\n  \"yearOfProduction\": 2013\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/machine",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"machine"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit machine",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": \"4ac1a5ac-fd94-4605-8175-34cad364816c\",\r\n  \"name\": \"Milling machine\",\r\n  \"description\": \"A milling machine is a manufacturing machine which uses rotary cutters to remove material by advancing a cutter into a work piece.\",\r\n  \"yearOfProduction\": 2018\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/machine",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"machine"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get machine by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/machine/4ac1a5ac-fd94-4605-8175-34cad364816c",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"machine",
+						"4ac1a5ac-fd94-4605-8175-34cad364816c"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete machine by ID",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/machine/4ac1a5ac-fd94-4605-8175-34cad364816c",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"machine",
+						"4ac1a5ac-fd94-4605-8175-34cad364816c"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
