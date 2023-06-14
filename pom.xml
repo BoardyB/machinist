@@ -19,7 +19,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <fasterxml.version>2.11.1</fasterxml.version>
-        <guava.version>29.0-jre</guava.version>
+        <guava.version>32.0.0-jre</guava.version>
         <lombok.version>1.18.12</lombok.version>
         <javax-validation.version>2.0.1.Final</javax-validation.version>
         <hibernate-validator.version>6.1.5.Final</hibernate-validator.version>
